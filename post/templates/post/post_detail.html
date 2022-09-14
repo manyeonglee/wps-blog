@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{object.title|truncatechars:15}}
+{% endblock %}
+
+{% block content %}
+<div class="row mt-3">
+    <div class="col">
+        {% include 'post/category_list.html' %}
+    </div>
+    <div class="col-8">
+        <div class="alert alert-info">{{object.title}} - {{object.created}}</div>
+        {{object.text|safe}}
+        {% load tagging_tags %}
+
+        {% tags_for_object object as tags %}
+        {% if tags %}
+            Tags :
+            {% for tag in tags %}
+                <a href="{% url 'post:post_taggedlist' tag.name %}">#{{tag.name}}</a>
+            {% endfor %}
+        {% endif %}
+
+        <hr>
+        {% load comment%}
+        {% show_comment content_type=object object_id=object.id %}
+    </div>
+    <div class="col"></div>
+</div>
+
+
+
+
+{% endblock %}
